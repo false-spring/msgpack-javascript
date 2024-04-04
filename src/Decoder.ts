@@ -75,7 +75,7 @@ type StackMapState = {
   size: number;
   key: MapKeyType | null;
   readCount: number;
-  map: Record<string, unknown>;
+  map: Array<{key: MapKeyType, value: unknown}>;
 };
 
 type StackArrayState = {
@@ -112,7 +112,7 @@ class StackPool {
     state.type = STATE_MAP_KEY;
     state.readCount = 0;
     state.size = size;
-    state.map = {};
+    state.map = [];
   }
 
   private getUninitializedStateFromPool() {
@@ -572,7 +572,7 @@ export class Decoder<ContextType = undefined> {
         } else {
           // it must be `state.type === State.MAP_VALUE` here
 
-          state.map[state.key!] = object;
+          state.map.push({ key: state.key!, value: object});
           state.readCount++;
 
           if (state.readCount === state.size) {
