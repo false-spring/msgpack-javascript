@@ -362,6 +362,18 @@ export class Encoder<ContextType = undefined> {
     }
   }
 
+  private countWithoutUndefined(object: Record<string, unknown>, keys: ReadonlyArray<string>): number {
+    let count = 0;
+
+    for (const key of keys) {
+      if (object[key] !== undefined) {
+        count++;
+      }
+    }
+
+    return count;
+  }
+
   private encodeMap(object: Record<string, unknown>, depth: number) {
     const keys = Object.keys(object);
     if (this.sortKeys) {
